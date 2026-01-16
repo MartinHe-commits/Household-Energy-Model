@@ -1,0 +1,5 @@
+[project]
+name = "household-energy-model"
+version = "0.1.0"
+description = "Household energy system model (PV, battery, loads, grid, heating)"
+requires-python = ">=3.11"
