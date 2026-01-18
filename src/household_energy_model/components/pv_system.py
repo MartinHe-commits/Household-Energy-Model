@@ -5,25 +5,26 @@ import matplotlib.pyplot as plt
 class PVSystem:
     def __init__(self, name, power):
         self.name = name
-        #power in kW
-        self.power = power
+        self.power = power # power in W
 
-    #Probeweise initialisierung eines power-profiles - später: Profile-Import aus einer Datei
-    def init_power_profile(self):
-        power_profile = np.zeros(100)
+    #Probeweise initialisierung eines power-profiles
+    def init_energy_profile(self):
+        energy_profile = np.zeros(100)
         for i in range(100):
             if i >= 20 and i <= 40:
-                power_profile[i] = 1
+                energy_profile[i] = 1
 
             if i >= 60 and i <= 80:
-                power_profile[i] = 1
+                energy_profile[i] = 1
 
-        self.power_profile = power_profile
-        print(self.power_profile)
-        plt.plot(self.power_profile)
-        plt.show()
+        self.energy_profile = (energy_profile + 1) * self.power
 
-    #ToDo: Import von Erzeugungs-Profilen
+    def import_energy_profile(self):
+        # ToDo: Import von Erzeugungs-Profilen
+        pass
 
+    def calculate_energy(self):
+        self.energy_output = self.energy_profile * self.power
+        return self.energy_output
 
 
