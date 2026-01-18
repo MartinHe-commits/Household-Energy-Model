@@ -12,9 +12,8 @@ class ElectricityGrid:
 
     def calculate_energy_balancing_profile(self, array):
         for index, value in enumerate(array):
-            array[index] += value
+            self.energy_balance_profile[index] += value
 
-        self.energy_balance_profile = array
 
     def calculate_energy_input(self):
         energy_input = self.energy_balance_profile[self.energy_balance_profile >=0]

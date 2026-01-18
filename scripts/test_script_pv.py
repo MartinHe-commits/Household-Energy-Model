@@ -15,15 +15,14 @@ heat_pump.init_heating_profile()
 electricity_grid = ElectricityGrid(name = 'electric_grid')
 
 # rechne einfache Bilanz und teste ElectricityGrid
-
 electricity_balancing_household_profile = pv_system.energy_profile - heat_pump.heating_profile
 
 electricity_grid.calculate_energy_balancing_profile(electricity_balancing_household_profile)
 electricity_grid.calculate_energy_input()
 electricity_grid.calculate_energy_output()
 
-print(electricity_grid.energy_in)
-print(electricity_grid.energy_out)
+print('energy_in = {}'.format(electricity_grid.energy_in))
+print('energy_out = {}'.format(electricity_grid.energy_out))
 plt.plot(electricity_grid.energy_balance_profile)
 plt.show()
 
