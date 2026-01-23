@@ -21,7 +21,7 @@ class HeatingSystem:
 
         self.heating_profile = heating_profile * self.heating_capacity
 
-    def import_heating_demand(self):
+    def set_profile(self):
         pass
 
     def calculate_cop(self):
