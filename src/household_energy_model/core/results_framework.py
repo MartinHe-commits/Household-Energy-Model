@@ -10,5 +10,5 @@ class ResulsFramework:
     def results_setup(self):
         results_df = pd.DataFrame
         for result in self.results:
-            if result == "E.PV":
-                results_df['E.PV'] = np.full(self.base_time.N, np.nan)
+            if result == "E.el.PV":
+                results_df['E.el.PV'] = np.full(self.base_time.N, np.nan)

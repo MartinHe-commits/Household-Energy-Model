@@ -2,13 +2,23 @@ import numpy as np
 
 
 class Battery:
-    def __init__(self, name, max_capacity, max_loading_power = 1e9, max_deloading_power = 1e9, soc=0):
+    def __init__(self, base_time, name, max_capacity, max_loading_power = 1e9, max_deloading_power = 1e9, soc=0):
         self.name = name
         self.max_capacity = max_capacity # in Wh
         self.max_loading_power = max_loading_power # in W
         self.max_deloading_power = max_deloading_power #in W
         self.soc = soc # float from 0 to 1 0.5 equals 50%
+        self.base_time = base_time
         self.loaded_capacity = max_capacity * soc
+
+    def run(self):
+        pass
+
+    def set_profile(self):
+        pass
+
+    def setup_results_schema(self):
+        self.results_schema = ['E.el.in.Battery', 'E.el.out.Battery', 'E.el.balance.Battery']
 
     def energy_input(self, energy_input): #time_step in hours
         # if self.soc < 1:
@@ -55,8 +65,3 @@ class Battery:
 
         self.soc = self.loaded_capacity / self.max_capacity
         return missing_energy
-
-
-
-
-

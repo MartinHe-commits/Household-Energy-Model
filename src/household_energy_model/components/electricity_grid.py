@@ -3,16 +3,21 @@ import numpy as np
 
 class ElectricityGrid:
 
-    def __init__(self, name, energy_in=0, energy_out=0):
+    def __init__(self, base_time, name, energy_in=0, energy_out=0):
         self.name = name
         # self.energy_balance_profile = energy_balance_profile
         self.energy_in = energy_in
         self.energy_out = energy_out
+        self.base_time = base_time
 
+    def run(self):
+        pass
 
-    # def calculate_energy_balancing_profile(self, value, index):
-    #         self.energy_balance_profile[index] = value
+    def set_profile(self):
+        pass
 
+    def setup_results_schema(self):
+        self.results_schema = ['E.el.in.Grid', 'E.el.out.Grid', 'E.el.balance.Grid']
 
     def calculate_energy_input(self):
         energy_input = self.energy_balance_profile[self.energy_balance_profile >=0]
@@ -21,5 +26,7 @@ class ElectricityGrid:
     def calculate_energy_output(self):
         energy_output = self.energy_balance_profile[self.energy_balance_profile < 0]
         self.energy_out = sum(energy_output)
+
+
 
 

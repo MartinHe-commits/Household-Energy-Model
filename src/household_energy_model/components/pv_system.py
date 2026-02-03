@@ -3,10 +3,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class PVSystem:
-    def __init__(self, name, power):
+    def __init__(self, base_time, name, power):
         self.name = name
         self.power = power # power in W
+        self.base_time = base_time
         self.setup_results_schema()
+
+    def run(self):
+        pass
+
+    def set_profile(self, df):
+        if len(df) == self.base_time.N:
+            self.energy_profile = np.array(df.values)
+        else:
+            raise ValueError()
+
+    def setup_results_schema(self):
+        self.results_schema = ['E.el.out.PV']
 
     #Probeweise initialisierung eines power-profiles
     def init_energy_profile(self):
@@ -20,14 +33,9 @@ class PVSystem:
 
         self.energy_profile = (energy_profile + 1) * self.power
 
-    def set_profile(self):
-        pass
-
     def calculate_energy(self):
         self.energy_output = self.energy_profile * self.power
         return self.energy_output
 
-    def setup_results_schema(self):
-        self.results_schema = ['E.PV']
 
 
