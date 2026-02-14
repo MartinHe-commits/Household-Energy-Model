@@ -1,7 +1,9 @@
 import numpy as np
 
+from household_energy_model.components.mixins import ProfileMixin
 
-class Battery:
+
+class Battery(ProfileMixin):
     def __init__(self, base_time, name, max_capacity, max_loading_power = 1e9, max_deloading_power = 1e9, soc=0):
         self.name = name
         self.max_capacity = max_capacity # in Wh
@@ -14,8 +16,6 @@ class Battery:
     def run(self):
         pass
 
-    def set_profile(self):
-        pass
 
     def setup_results_schema(self):
         self.results_schema = ['E.el.in.Battery', 'E.el.out.Battery', 'E.el.balance.Battery']

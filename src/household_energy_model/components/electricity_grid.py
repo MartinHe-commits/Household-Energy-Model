@@ -1,7 +1,8 @@
 import numpy as np
+from household_energy_model.components.mixins import ProfileMixin
 
 
-class ElectricityGrid:
+class ElectricityGrid(ProfileMixin):
 
     def __init__(self, base_time, name, energy_in=0, energy_out=0):
         self.name = name
@@ -11,9 +12,6 @@ class ElectricityGrid:
         self.base_time = base_time
 
     def run(self):
-        pass
-
-    def set_profile(self):
         pass
 
     def setup_results_schema(self):

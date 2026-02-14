@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from household_energy_model.components.mixins import ProfileMixin
 
-class PVSystem:
+class PVSystem(ProfileMixin):
     def __init__(self, base_time, name, power):
         self.name = name
         self.power = power # power in W
@@ -11,12 +12,6 @@ class PVSystem:
 
     def run(self):
         pass
-
-    def set_profile(self, df):
-        if len(df) == self.base_time.N:
-            self.energy_profile = np.array(df.values)
-        else:
-            raise ValueError()
 
     def setup_results_schema(self):
         self.results_schema = ['E.el.out.PV']

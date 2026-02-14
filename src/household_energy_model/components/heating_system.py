@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from household_energy_model.components.mixins import ProfileMixin
 
-class HeatingSystem:
+class HeatingSystem(ProfileMixin):
     def __init__(self, base_time, name, heating_capacity, type):
         self.name = name
         self.heating_capacity = heating_capacity
@@ -10,9 +11,6 @@ class HeatingSystem:
         self.base_time = base_time
 
     def run(self):
-        pass
-
-    def set_profile(self):
         pass
 
     def setup_results_schema(self):

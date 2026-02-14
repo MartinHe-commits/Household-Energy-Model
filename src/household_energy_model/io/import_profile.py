@@ -9,8 +9,14 @@ def import_profile(path):
 
     if suffix == ".csv":
         df = pd.read_csv(path)
+
     elif suffix == ".xlsx":
         df = pd.read_excel(path, sheet_name=0, parse_dates=['Date'])
+
+    if 'Date' not in df.columns:
+        raise ValueError("import error: missing 'Date' column")
+
+    df = df.set_index('Date')
 
     return df
 
