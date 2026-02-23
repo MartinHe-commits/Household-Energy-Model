@@ -4,12 +4,13 @@ from src.household_energy_model.components.pv_system import PVSystem
 from src.household_energy_model.components.battery import Battery
 from src.household_energy_model.components.heating_system import HeatingSystem
 from src.household_energy_model.components.electricity_grid import ElectricityGrid
-from src.household_energy_model.utils.helper_functions import flatten
+
 from pathlib import Path
 import pandas as pd
 from matplotlib import pyplot as plt
 
 def main():
+
     # import profiles from .xlsx
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
     data_path = PROJECT_ROOT / 'data'
