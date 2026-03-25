@@ -1,3 +1,4 @@
+from household_energy_model.components.consumer import Consumer
 from src.household_energy_model.io.import_profile import import_profile
 from src.household_energy_model.core.base_time import BaseTime
 from src.household_energy_model.components.pv_system import PVSystem
@@ -20,6 +21,7 @@ def main():
     base_time = BaseTime(time_series=pv_energy_df)
 
     heating_system_el_energy_demad_df = import_profile(data_path/'heating_system_el_energy_demand_random_10 kW.xlsx')
+    consumer_el_energy_demand_df = import_profile(data_path/'consumer_profile_el_random_10 kW.xlsx')
     # print(pv_energy_df)
     # print(base_time.time_series)
     # print(base_time.N)
@@ -32,6 +34,9 @@ def main():
     battery = Battery(base_time=base_time, name="Battery", max_capacity=20e3)
     electricity_grid = ElectricityGrid(base_time=base_time, name="Electricity Grid")
     heating_system = HeatingSystem(base_time=base_time, name="Heating", heating_capacity=10e3, type='heat_pump')
+    consumer = Consumer(base_time=base_time, name="Consumer")
+    consumer.set_profile(consumer_el_energy_demand_df)
+
 
     heating_system.set_profile(heating_system_el_energy_demad_df)
     # plt.plot(pv_system.energy_profile)
@@ -40,6 +45,7 @@ def main():
     component_list.append(battery)
     component_list.append(electricity_grid)
     component_list.append(heating_system)
+    component_list.append(consumer)
 
     results_columns_list = []
 
@@ -48,6 +54,14 @@ def main():
         results_columns_list.extend(component.results_schema)
 
     results_df = pd.DataFrame(columns=results_columns_list, index=base_time.time_stamps)
+
+    for index, value in enumerate(base_time.time_stamps):
+        results_df.loc[base_time.time_stamps[index], 'E.el.out.PV'] = pv_system.energy_profile[index]
+
+        E_el_pv_consumer_balance = pv_system.energy_profile[index] - consumer.energy_profile[index]
+
+
+
     print(results_df)
 
 if __name__ == '__main__':

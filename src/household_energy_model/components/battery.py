@@ -13,55 +13,57 @@ class Battery(ProfileMixin):
         self.base_time = base_time
         self.loaded_capacity = max_capacity * soc
 
-    def run(self):
-        pass
+    def run(self, energy):
+        if energy < 0:
+            self.energy_output(-energy)
 
+        elif energy >0:
+            self.energy_input(energy)
 
-    def setup_results_schema(self):
-        self.results_schema = ['E.el.in.Battery', 'E.el.out.Battery', 'E.el.balance.Battery']
 
     def energy_input(self, energy_input): #time_step in hours
-        # if self.soc < 1:
-        #     if energy_input > self.max_loading_power:
-        #         self.loaded_capacity += self.max_loading_power * time_step
-        #
-        #     else:
-        #         self.loaded_capacity += energy_input
-        #
-        # self.soc = self.loaded_capacity / self.battery_capacity
+        input_capacity = self.max_capacity - self.loaded_capacity
+        if input_capacity >= energy_input:
+            if self.max_loading_power >= energy_input:
+                self.loaded_capacity += energy_input
+                unstored_energy = 0
+            else:
+                self.loaded_capacity += self.max_loading_power
+                unstored_energy = energy_input - self.max_loading_power
 
-        if self.loaded_capacity + energy_input <= self.max_capacity:
-            # ToDo was wenn zu viel Strom auf einmal rein soll und die Batterie nicht hinterher kommt?
-            self.loaded_capacity += energy_input
-            unstored_energy = 0
-
-        else:
-            capacity = self.max_capacity - self.loaded_capacity
-            self.loaded_capacity += capacity
-            unstored_energy = energy_input - capacity
+        elif input_capacity < energy_input:
+            if self.max_loading_power >= input_capacity:
+                self.loaded_capacity = self.max_capacity
+                unstored_energy = energy_input - input_capacity
+            else:
+                self.loaded_capacity += self.max_loading_power
+                unstored_energy = energy_input - self.max_loading_power
 
         self.soc = self.loaded_capacity / self.max_capacity
         return unstored_energy
 
     def energy_output(self, energy_output):
-        # if self.soc > 1:
-        #     if output_power > self.max_deloading_power:
-        #         self.loaded_capacity -= self.max_deloading_power * time_step
-        #
+        # Batterie hat genug Energie geladen
+        if self.loaded_capacity >= energy_output:
+            if self.max_deloading_power >= energy_output:
+                self.loaded_capacity -= energy_output
+                missing_energy = 0
 
-        #     else:
-        #         self.loaded_capacity -= output_power * time_step
-        #
-        # self.soc = self.loaded_capacity / self.max_capacity
+            else:
+                missing_energy = energy_output - self.max_deloading_power
 
-        if self.loaded_capacity - energy_output >= 0:
-            # ToDo auch hier den Fall Programmieren, dass die Batterie nicht schnell genug ein- und ausspeisen kann
-            self.loaded_capacity -= energy_output
-            missing_energy = 0
+        # Batterie hat weniger Energie geladen als benötigt wird
+        elif self.loaded_capacity < energy_output:
+            if self.max_deloading_power >= self.loaded_capacity:
+                missing_energy = energy_output - self.loaded_capacity
+                self.loaded_capascity = 0
 
-        else:
-            missing_energy = energy_output - self.loaded_capacity
-            self.loaded_capascity = 0
+            else:
+                missing_energy = energy_output - self.max_deloading_power
+                self.loaded_capacity = self.loaded_capacity - self.max_deloading_power
 
         self.soc = self.loaded_capacity / self.max_capacity
-        return missing_energy
+        return -missing_energy
+
+    def setup_results_schema(self):
+        self.results_schema = ['E.el.in.Battery', 'E.el.out.Battery', 'E.el.balance.Battery']

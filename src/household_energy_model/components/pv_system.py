@@ -17,16 +17,16 @@ class PVSystem(ProfileMixin):
         self.results_schema = ['E.el.out.PV']
 
     #Probeweise initialisierung eines power-profiles
-    def init_energy_profile(self):
-        energy_profile = np.full(100, np.nan)
-        for i in range(len(energy_profile)):
-            if i >= 20 and i <= 40:
-                energy_profile[i] = 1
-
-            if i >= 60 and i <= 80:
-                energy_profile[i] = 1
-
-        self.energy_profile = (energy_profile + 1) * self.power
+    # def init_energy_profile(self):
+    #     energy_profile = np.full(100, np.nan)
+    #     for i in range(len(energy_profile)):
+    #         if i >= 20 and i <= 40:
+    #             energy_profile[i] = 1
+    #
+    #         if i >= 60 and i <= 80:
+    #             energy_profile[i] = 1
+    #
+    #     self.energy_profile = (energy_profile + 1) * self.power
 
     def calculate_energy(self):
         self.energy_output = self.energy_profile * self.power
